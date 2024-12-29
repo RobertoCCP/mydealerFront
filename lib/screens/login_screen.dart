@@ -77,6 +77,10 @@ class _LoginScreenState extends State<LoginScreen> {
               onPressed: () => Navigator.pushNamed(context, '/register'),
               child: Text('Don’t have an account? Register'),
             ),
+            TextButton(
+              onPressed: () => Navigator.pushNamed(context, '/forgot-password'),
+              child: Text('¿Olvidaste tu contraseña?'),
+            ),
           ],
         ),
       ),
