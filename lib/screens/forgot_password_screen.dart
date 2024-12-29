@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../styles/registerstyle.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   @override
@@ -47,11 +48,19 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     }
   }
 
+  // Navegar a la pantalla de login
+  void _navigateToLogin() {
+    Navigator.pushReplacementNamed(context, '/login');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Restablecer Contraseña'),
+        backgroundColor: const Color.fromARGB(255, 250, 77, 77),
+        centerTitle: true,
+        titleTextStyle: RegisterStyle.appBarTextStyle, // Estilo del AppBar
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -59,28 +68,61 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             ? Center(child: CircularProgressIndicator())
             : ListView(
                 children: <Widget>[
-                  TextField(
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                      labelText: 'Correo Electrónico',
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: _sendResetLink,
-                    child: Text('Enviar Enlace de Restablecimiento'),
-                  ),
-                  if (_message.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: Text(
-                        _message,
-                        style: TextStyle(
-                          color: _message.contains('Error') ? Colors.red : Colors.green,
+                  Container(
+                    width: RegisterStyle.formWidth,
+                    padding: RegisterStyle.formPadding,
+                    decoration: RegisterStyle.formDecoration,
+                    child: Column(
+                      children: <Widget>[
+                        TextField(
+                          controller: _emailController,
+                          decoration: RegisterStyle.textFieldDecoration.copyWith(
+                            labelText: 'Correo Electrónico',
+                          ),
+                          keyboardType: TextInputType.emailAddress,
                         ),
-                      ),
+                        SizedBox(height: 20),
+                        // Fila con los botones
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            // Botón Enviar Enlace
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: _sendResetLink,
+                                style: RegisterStyle.registerButtonStyle.copyWith(
+                                  backgroundColor: MaterialStateProperty.all(Colors.green), // Color verde
+                                ),
+                                child: Text('Enviar Enlace'),
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            // Botón Cancelar
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: _navigateToLogin,
+                                style: RegisterStyle.registerButtonStyle.copyWith(
+                                  backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 255, 0, 0)),
+                                ),
+                                child: Text('Cancelar'),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 20),
+                        if (_message.isNotEmpty)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            child: Text(
+                              _message,
+                              style: TextStyle(
+                                color: _message.contains('Error') ? Colors.red : Colors.green,
+                              ),
+                            ),
+                          ),
+                      ],
                     ),
+                  ),
                 ],
               ),
       ),
